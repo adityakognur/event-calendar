@@ -38,9 +38,12 @@ function App() {
 
   // Add or Edit from UI
   const handleDateClick = (date) => {
-    setSelectedEvent({ date: date.toISOString().split("T")[0], time: "", recurrence: "none" });
-    setModalOpen(true);
-  };
+  // Format as YYYY-MM-DD in local time, not UTC
+  const pad = (n) => n.toString().padStart(2, "0");
+  const localDate = `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+  setSelectedEvent({ date: localDate, time: "", recurrence: "none" });
+  setModalOpen(true);
+};
   const handleEventClick = (event) => {
     setSelectedEvent(event);
     setModalOpen(true);
@@ -49,7 +52,7 @@ function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="outer-container">
-        <h1 className="calendar-title-main">Event Calendar</h1>
+        <h1 className="calendar-title-main">Evently</h1>
         <Calendar
           events={events}
           onDateClick={handleDateClick}
